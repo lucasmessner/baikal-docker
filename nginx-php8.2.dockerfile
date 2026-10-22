@@ -1,7 +1,7 @@
 # Multi-stage build, see https://docs.docker.com/develop/develop-images/multistage-build/
 FROM alpine AS builder
 
-ENV VERSION 0.10.1
+ENV VERSION 0.13.0
 
 ADD https://github.com/sabre-io/Baikal/releases/download/$VERSION/baikal-$VERSION.zip .
 RUN apk add unzip && unzip -q baikal-$VERSION.zip
@@ -13,7 +13,7 @@ WORKDIR /baikal
 RUN cd / && mv baikal /baikal-src
 
 # Wir erzwingen hier für Twig eine sichere Version >= 3.26.0 (schließt GHSA-7p85-w9px-jpjp)
-RUN cd /baikal-src && composer require twig/twig:"^3.26.0" --no-update || true
+RUN cd /baikal-src && composer require twig/twig:"^3.26.0" || true
 # Alternativ, falls Baïkal Composer direkt nutzt:
 # RUN cd /baikal-src && composer update twig/twig --with-dependencies
 
